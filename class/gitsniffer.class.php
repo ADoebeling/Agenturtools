@@ -1,7 +1,7 @@
 <?php
 
 namespace ADoebeling;
-require_once 'php-github-api/vendor/autoload.php';
+
 
 /**
  * Class gitSniffer
@@ -129,6 +129,8 @@ require_once 'php-github-api/vendor/autoload.php';
  */
 class gitSniffer
 {
+    protected static $cmdGitStatusFiles = 'IFS=\'\'; git status --porcelain | while read -n2 mode; read -n1; read file; do echo $mode $(stat -c %y "$file" 2> /dev/null) $file; done|sort';
+
     /** @var array cmd-output */
     protected $cmdGitStatusOutput = array();
 
@@ -145,83 +147,54 @@ class gitSniffer
     protected $localBehind;
 
 
-    /**
-     * Parse the first line of `git status` containing branch/last commit/ahead/behind
-     * @param string $cmd
-     * @return array
-     */
-    public static function getGitStatus($cmd = 'git status -b --porcelain')
+    public static function getGitStatusAsParsedMarkdown()
     {
-        exec($cmd, $output, $cmdReturnVar);
+        /*
+         * Parse git status files
+         */
+        $files = git::getGitStatusFiles();
 
-        if ($cmdReturnVar == 0) // Everything fine
-        {
-            if ($output[0] == '## Initial commit on master') {
-                // TODO: Exception: First commit missing
-            }
+        $filesMd = ['untracked' => '', 'modified' => '', 'deleted' => ''];
+        $count = ['untracked' => 0, 'modified' => 0, 'deleted' => 0];
+        $md = '';
 
-            //http://regexr.com/3g0gk
-            $regEx = '## ([\w\d\/\-.]*)(?:\.\.\.)([\w\d\/\-.]*)(?: \[(?:ahead (\d*))?(?:(?:, )?behind (\d*))?\])?';
-
-            // TODO Bugfix
-            //preg_match($regEx, $output[0], $matches);
-            /*
-                [0] => ## master...origin/master [ahead 35, behind 36]
-                [1] => master
-                [2] => origin/master
-                [3] => 35
-                [4] => 36
-            */
-
-            /*return [
-                'branch' => $matches[1],
-                'ahead' => $matches[3],
-                'before' => $matches[4]
-            ];*/
-
-        } else if ($cmdReturnVar == 128) // fatal: Not a git repository (or any of the parent directories): .git
-        {
-            // TODO: Exception
-        } else // Unknown error
-        {
-            // TODO: Exception
+        foreach ($files as $file) {
+            $filesMd[$file['status']] .= empty($file['modified']) ? "* `{$file['name']}`\n" : "* `{$file['name']}` (last modified: {$file['modified']})\n";
+            $count[$file['status']]++;
         }
-        return [];
+
+        if ($count['untracked'] == 1)
+            $md .= "## One new or untracked file/folder\n\n{$filesMd['untracked']}\n";
+
+        else if ($count['untracked'] >= 1)
+            $md .= "## {$count['untracked']} new or untracked files/folders\n\n{$filesMd['untracked']}\n";
+
+
+        if ($count['modified'] == 1)
+            $md .= "## One modified file/folder\n\n{$filesMd['modified']}\n";
+
+        else if ($count['modified'] >= 1)
+            $md .= "## {$count['modified']} modified files/folders\n\n{$filesMd['modified']}";
+
+        if ($count['deleted'] == 1)
+            $md .= "## One deleted file/folder\n\n{$filesMd['deleted']}\n";
+
+        else if ($count['deleted'] >= 1)
+            $md .= "## {$count['deleted']} deleted files/folders\n\n{$filesMd['deleted']}\n";
+
+
+        /*
+         * Parse git diff
+         */
+
+
+        return $md;
     }
 
 
-    /**
-     * Parse the files returned by `git status` including modification time as markdown
-     * @param string $cmd
-     * @return array
-     * @see http://stackoverflow.com/questions/14141344/git-status-list-last-modified-date
-     */
-    public static function getGitStatusFilesAsParsedMarkdown($cmd = 'IFS=\'\'; git status --porcelain | while read -n2 mode; read -n1; read file; do echo $mode $(stat -c %y "$file" 2> /dev/null) $file; done|sort')
-    {
-        exec($cmd, $output, $cmdReturnVar);
-
-        $result = '';
-        foreach ($output as $line) {
-            $regEx = '/.(.) ([\d-: ]*)?(?:(?:.\d)*(?: [\+\-\d]* ))?(.*)/';
-            preg_match($regEx, $line, $matches);
-
-            /*
-            [0] => ?? 2017-05-20 14:17:54.207894588 +0200 folder/
-            [1] => ?
-            [2] => 2017-05-20 14:17:54
-            [3] => folder/
-            */
-
-            $result[$matches[1]] .= empty($matches[2]) ? "* `{$matches[3]}`\n" : "* `{$matches[3]}` (last modified: {$matches[2]})\n";
-        }
 
 
-        return [
-            'untracked' => !isset($result['?']) ?: "## New and untracked file(s)/folder(s):\n\n{$result['?']}",
-            'modified' => !isset($result['M']) ?: "## Modified file(s)/folder(s):\n\n{$result['M']}",
-            'deleted' => !isset($result['D']) ?: "## Deleted file(s)/folder(s):\n\n{$result['D']}"
-        ];
-    }
+
 
     /**
      * Parse the diff returned by `git diff`
@@ -257,18 +230,18 @@ class gitSniffer
             "{$files['deleted']}\n" .
             "$diff\n" .
 
-            "## Commit changes\n".
+            "## Commit changes\n" .
             "Please take a minute and [click here to commit these files or update the .gitignore](#notyet) " .
-            "if these files should not be part of the repo.\n\n\"".
+            "if these files should not be part of the repo.\n\n\"" .
 
             "Thanks a lot!\n" .
             "\- [GitSniffer](https://github.com/ADoebeling/GitSniffer) by @ADoebeling\n\n" .
 
-            "<!--\n".
-            "Script: {$_SERVER['SCRIPT_FILENAME']}\n".
-            "Request: {$_SERVER['REQUEST_URI']}\n".
-            "Remote: {$_SERVER['REMOTE_ADDR']} / {$_SERVER['REMOTE_HOST']}\n".
-            "Trackback: https://github.com/1601com/Hosting/issues/12\n".
+            "<!--\n" .
+            "Script: {$_SERVER['SCRIPT_FILENAME']}\n" .
+            "Request: {$_SERVER['REQUEST_URI']}\n" .
+            "Remote: {$_SERVER['REMOTE_ADDR']} / {$_SERVER['REMOTE_HOST']}\n" .
+            "Trackback: https://github.com/1601com/Hosting/issues/12\n" .
             "-->";
 
         return ['text' => $text];
@@ -279,8 +252,6 @@ class gitSniffer
         $text = self::getTextAsParsedMarkdown()['text'];
         $client = new \Github\Client();
         $client->authenticate('ad1601com-test', 'f632d21c39d28a976bd87b2c9d8bb4e45aacf2d4', \Github\Client::AUTH_HTTP_PASSWORD);
-        $client->api('issues')->create('ad1601com-test', 'test', array('title' => ':eyeglasses: Commits missing', 'body' => $text, 'assignee' =>'ADoebeling'));
+        $client->api('issues')->create('ad1601com-test', 'test', array('title' => ':eyeglasses: Commits missing', 'body' => $text, 'assignee' => 'ADoebeling'));
     }
 }
-
-gitSniffer::sendIssue();
