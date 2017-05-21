@@ -10,11 +10,11 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "cvuorinen/phpdoc-markdown-public": "^0.1.2",
         "knplabs/github-api": "^2.4",
         "php-http/guzzle6-adapter": "^1.1"
     },
     "require-dev": {
+        "cvuorinen/phpdoc-markdown-public": "^0.1.2",
         "phpunit/phpunit": "^6.1"
     }
 }
