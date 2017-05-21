@@ -1,6 +1,6 @@
 <?php
-
-namespace ADoebeling;
+declare(strict_types=1);
+namespace www1601com\Agenturtools;
 //require_once '../config/config.default.php'; // TODO: Config mgnt
 
 
@@ -20,7 +20,7 @@ class git
      * @param string $cmd
      * @param string $regEx
      * @return string
-     * @throws class
+     * @throws exception
      */
     public static function getGitVersion($cmd = cmdGitVersion, $regEx = regExGitVersion)
     {
@@ -55,7 +55,7 @@ class git
      * @param string $startPath
      * @return string
      */
-    public static function chDirToGitToplevel ($startPath = __DIR__.'/../../')
+    public static function chDirToGitToplevel ($startPath = "{__DIR__}/../../")
     {
         chdir($startPath);
         $path = self::getGitRootPath();

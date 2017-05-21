@@ -1,5 +1,5 @@
 <?php
-namespace ADoebeling;
+namespace www1601com\Agenturtools;
 
 
 class exception extends \Exception

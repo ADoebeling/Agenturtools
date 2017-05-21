@@ -1,6 +1,6 @@
 <?php
 
-namespace ADoebeling;
+namespace www1601com\Agenturtools;
 class cmd
 {
     protected $cmd = '';
@@ -79,8 +79,7 @@ class cmd
      * @param string $returnFormat
      * @return array|string|bool
      */
-    public
-    static function run($cmd, $regex = '', $returnFormat = 'array')
+    public static function run($cmd, $regex = '', $returnFormat = 'array')
     {
         if (empty($regex)) {
             return (new cmd())

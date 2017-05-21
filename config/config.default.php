@@ -1,5 +1,7 @@
 <?php
 
+namespace www1601com\Agenturtools;
+
 /**
  * Show the git version
  *
