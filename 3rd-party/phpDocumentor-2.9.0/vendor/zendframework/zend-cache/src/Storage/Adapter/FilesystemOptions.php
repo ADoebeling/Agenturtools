@@ -135,9 +135,11 @@ class FilesystemOptions extends AdapterOptions
                     "Cache directory '{$cacheDir}' not writable"
                 );
             } elseif (!is_readable($cacheDir)) {
-                throw new Exception\InvalidArgumentException(
-                    "Cache directory '{$cacheDir}' not readable"
-                );
+                // @ADoebeling 170521
+                // Hotfix to patch ZEND-Compatibility with restricted access to shared /tmp
+                //throw new Exception\InvalidArgumentException(
+                //    "Cache directory '{$cacheDir}' not readable"
+                //);
             }
 
             $cacheDir = rtrim(realpath($cacheDir), DIRECTORY_SEPARATOR);
