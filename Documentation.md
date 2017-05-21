@@ -1,4 +1,4 @@
-# Agenturtools
+# PHP-Documentation of the Agenturtools
 
 ## Table of Contents
 
@@ -11,6 +11,11 @@
     * [run](#run)
 * [exception](#exception)
     * [errorMessage](#errormessage)
+* [git](#git)
+    * [getGitVersion](#getgitversion)
+    * [getGitRootPath](#getgitrootpath)
+    * [chDirToGitToplevel](#chdirtogittoplevel)
+    * [getGitStatusFiles](#getgitstatusfiles)
 * [gitSniffer](#gitsniffer)
     * [getGitStatusAsParsedMarkdown](#getgitstatusasparsedmarkdown)
     * [getGitDiffAsParsedMarkdown](#getgitdiffasparsedmarkdown)
@@ -168,6 +173,118 @@ exception::errorMessage(  )
 
 
 
+
+
+
+
+---
+
+## git
+
+Class git
+
+
+
+* Full name: \www1601com\Agenturtools\git
+
+**See Also:**
+
+* https://github.com/ADoebeling/GitSniffer 
+
+### getGitVersion
+
+Get the installed git version
+
+```php
+git::getGitVersion( string $cmd = cmdGitVersion, string $regEx = regExGitVersion ): string
+```
+
+
+
+* This method is **static**.
+**Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `$cmd` | **string** |  |
+| `$regEx` | **string** |  |
+
+
+
+
+---
+
+### getGitRootPath
+
+Get the path to the git-rootpath (toplevel)
+
+```php
+git::getGitRootPath( string $cmd = cmdGitRootPath, string $regEx = regExGitRootPath ): string
+```
+
+
+
+* This method is **static**.
+**Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `$cmd` | **string** |  |
+| `$regEx` | **string** |  |
+
+
+
+
+---
+
+### chDirToGitToplevel
+
+Change to the git-root-directory (toplevel) of a given path
+
+```php
+git::chDirToGitToplevel( string $startPath = &quot;{__DIR__}/../../&quot; ): string
+```
+
+
+
+* This method is **static**.
+**Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `$startPath` | **string** |  |
+
+
+
+
+---
+
+### getGitStatusFiles
+
+Parse the files returned by `git status` including modified date and returns them as array:
+
+```php
+git::getGitStatusFiles( string $cmd = cmdGitStatusFiles, string $regEx = regExGitStatusFiles ): array
+```
+
+Array
+  (
+      [0] => Array
+      (
+          [original] => ?? 2017-05-20 20:14:08.000000000 +0200 someFile.php
+          [modified] => 2017-05-20 20:14:08
+          [name] => someFile.php
+          [status] => untracked
+     )
+  )
+
+* This method is **static**.
+**Parameters:**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `$cmd` | **string** |  |
+| `$regEx` | **string** |  |
 
 
 
