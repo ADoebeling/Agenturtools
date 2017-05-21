@@ -1,0 +1,20 @@
+{
+    "name": "adoebeling/agenturtools",
+    "description": "PHP-Shell-Toolset for web development teams, that provides a web based commit-and-push as well as a sniffer for not committed files",
+    "license": "cc-by-sa",
+    "authors": [
+        {
+            "name": "Andreas Doebeling",
+            "email": "ad@1601.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "cvuorinen/phpdoc-markdown-public": "^0.1.2",
+        "knplabs/github-api": "^2.4",
+        "php-http/guzzle6-adapter": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
+    }
+}
