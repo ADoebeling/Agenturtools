@@ -8,13 +8,10 @@
             "email": "ad@1601.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
+        "theseer/phpdox": "^0.9.0",
+        "VisualPHPUnit/VisualPHPUnit": "2.*",
         "knplabs/github-api": "^2.4",
         "php-http/guzzle6-adapter": "^1.1"
-    },
-    "require-dev": {
-        "cvuorinen/phpdoc-markdown-public": "^0.1.2",
-        "phpunit/phpunit": "^6.1"
     }
 }

@@ -2,14 +2,8 @@
 <?php
 
 namespace www1601com\Agenturtools;
+require_once 'bootstrap.php';
 
-require_once 'vendor/autoload.php';
-
-require_once 'class/exception.class.php';
-require_once 'config/config.default.php';
-require_once 'class/cmd.class.php';
-require_once 'class/git.class.php';
-require_once 'class/gitsniffer.class.php';
 
 chdir('../');
 
@@ -22,6 +16,7 @@ $r = [
 
     //git::getGitStatusFiles(),
     'gitStatusAsParsedMarkdown' => gitSniffer::getGitStatusAsParsedMarkdown(),
+    'github' => gitSniffer::sendIssue(),
     'eof'
 ];
 

@@ -51,14 +51,21 @@ class git
      * Change to the git-root-directory (toplevel) of a given path
      *
      * @param string $startPath
-     * @return string
+     * @return string|bool
      */
-    public static function chDirToGitToplevel($startPath = "{__DIR__}/../../")
+    public static function chDirToGitToplevel($startPath = __DIR__.'/../../')
     {
-        chdir($startPath);
-        $path = self::getGitRootPath();
-        chdir($path);
-        return $path;
+        try {
+            chdir($startPath);
+            $path = self::getGitRootPath();
+            chdir($path);
+            return $path;
+        }
+        catch (exception $e)
+        {
+            $e->errorMessage('Invalid startPath');
+            return false;
+        }
     }
 
 
