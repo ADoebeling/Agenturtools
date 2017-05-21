@@ -147,6 +147,10 @@ class gitSniffer
     protected $localBehind;
 
 
+    /**
+     * Returns the gitStatus and gitDiff markdown-formatted
+     * @return string
+     */
     public static function getGitStatusAsParsedMarkdown()
     {
         /*
@@ -186,8 +190,8 @@ class gitSniffer
         /*
          * Parse git diff
          */
-
-
+        $diff = git::getGitDiff()['md'];
+        $md .= "## Changes (diff-view)\n\n$diff";
         return $md;
     }
 
@@ -249,9 +253,10 @@ class gitSniffer
 
     public static function sendIssue()
     {
-        $text = self::getTextAsParsedMarkdown()['text'];
-        $client = new \Github\Client();
-        $client->authenticate('ad1601com-test', 'f632d21c39d28a976bd87b2c9d8bb4e45aacf2d4', \Github\Client::AUTH_HTTP_PASSWORD);
-        $client->api('issues')->create('ad1601com-test', 'test', array('title' => ':eyeglasses: Commits missing', 'body' => $text, 'assignee' => 'ADoebeling'));
+        $text = self::getGitStatusAsParsedMarkdown();
+
+        (new githubIssue())
+            ->api('issues')
+            ->create(githubRepoOwner, githubRepo, array('title' => ':Commits missing', 'body' => $text));
     }
 }

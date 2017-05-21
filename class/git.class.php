@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace www1601com\Agenturtools;
 //require_once '../config/config.default.php'; // TODO: Config mgnt
 
@@ -24,14 +25,11 @@ class git
      */
     public static function getGitVersion($cmd = cmdGitVersion, $regEx = regExGitVersion)
     {
-        try
-        {
+        try {
             return cmd::run($cmd, $regEx, 'string');
-        }
-        catch (exception $e)
-        {
-            throw new exception("It seems like you don't have git installed or it's not within the \$PATH.\n".
-            "Please ensure the cmd 'git' is available before running the script again.\n");
+        } catch (exception $e) {
+            throw new exception("It seems like you don't have git installed or it's not within the \$PATH.\n" .
+                "Please ensure the cmd 'git' is available before running the script again.\n");
         }
     }
 
@@ -43,7 +41,7 @@ class git
      * @todo Exception handling
      * @return string
      */
-    public static function getGitRootPath ($cmd = cmdGitRootPath, $regEx = regExGitRootPath)
+    public static function getGitRootPath($cmd = cmdGitRootPath, $regEx = regExGitRootPath)
     {
         return cmd::run($cmd, $regEx, 'string');
     }
@@ -55,14 +53,13 @@ class git
      * @param string $startPath
      * @return string
      */
-    public static function chDirToGitToplevel ($startPath = "{__DIR__}/../../")
+    public static function chDirToGitToplevel($startPath = "{__DIR__}/../../")
     {
         chdir($startPath);
         $path = self::getGitRootPath();
-        chdir ($path);
+        chdir($path);
         return $path;
     }
-
 
 
     /**
@@ -88,10 +85,7 @@ class git
         $return = array();
         $output = cmd::run($cmd, $regEx);
 
-        print_r($output);
-
-        foreach ($output as $line)
-        {
+        foreach ($output as $line) {
             /*
             [0] => ?? 2017-05-20 14:17:54.207894588 +0200 folder/
             [1] => ?
@@ -119,5 +113,20 @@ class git
             $return[] = $row;
         }
         return $return;
+    }
+
+    /**
+     * Return git diff
+     *
+     * @param string $cmd
+     * @param string $regEx
+     * @return array
+     */
+    public static function getGitDiff($cmd = cmdGitDiff, $regEx = regExGitDiff)
+    {
+        $raw = cmd::run($cmd, $regEx);
+        $md = "```diff\n$raw\n```";
+
+        return ['raw' => $raw, 'md' => $md];
     }
 }
