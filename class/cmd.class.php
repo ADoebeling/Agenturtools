@@ -95,6 +95,9 @@ class cmd
         }
     }
 
+    /**
+     * @todo Implement monolog
+     */
     protected function addLog()
     {
         $logFile = __DIR__.'/../log/cmd_' . date("ymd") . '_SRV.log';
