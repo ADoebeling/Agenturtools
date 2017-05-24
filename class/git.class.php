@@ -102,9 +102,9 @@ class git
         foreach ($output as $line) {
             $row = array();
             $row['original'] = $line[0];
-            $row['status'] = $line[1];
-            $row['modified'] = $line[2];
-            $row['name'] = $line[3];
+            $row['modified'] = $line[1];
+            $row['name'] = $line[2];
+            $row['status'] = $line[3];
             $row['sizeInByte'] = $line[4];
             $row['diskSizeInKb'] = $line[5];
             $row['type'] = $line[6];

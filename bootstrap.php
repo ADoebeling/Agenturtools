@@ -8,3 +8,5 @@ require_once 'class/cmd.class.php';
 require_once 'class/git.class.php';
 require_once 'class/gitsniffer.class.php';
 require_once 'class/githubIssue.php';
+require_once 'class/hostname.class.php';
+require_once 'class/textParser.class.php';

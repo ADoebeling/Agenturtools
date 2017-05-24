@@ -4,19 +4,20 @@
 namespace www1601com\Agenturtools;
 require_once 'bootstrap.php';
 
-
-chdir('../');
-
+$gitSniffer = new gitSniffer();
 
 $r = [
 
-    'chDir' => git::chDirToGitToplevel(),
+    'chDir' => git::chDirToGitToplevel(__DIR__),
     'git version' => git::getGitVersion(),
     'git toplevel path' => git::getGitRootPath(),
 
     //git::getGitStatusFiles(),
-    'gitStatusAsParsedMarkdown' => gitSniffer::getGitStatusAsParsedMarkdown(),
-    'github' => gitSniffer::sendIssue(),
+    //git::getGitDiff(),
+    //'gitStatusAsParsedMarkdown' => gitSniffer::getGitStatusAsMarkdown(),
+    'gitSnifferTitle' => $gitSniffer->getReminderTitle(),
+    'gitSnifferText' => $gitSniffer->getTextAsMarkdown(),
+    //'github' => gitSniffer::sendIssue(),
     'eof'
 ];
 
