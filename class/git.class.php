@@ -186,7 +186,11 @@ class git
                     break;
             }
 
-            if ($row['type'] != 'directory')
+            if ($row['statusName'] == 'deleted')
+            {
+                $row['realSizeReadable'] = '';
+            }
+            else if ($row['type'] != 'directory')
             {
                 $row['realSizeInKb'] = $row['sizeInByte']/1024;
                 $row['realSizeReadable'] = $row['sizeReadable'];
@@ -196,6 +200,8 @@ class git
                 $row['realSizeInKb'] = $row['diskSizeInKb'];
                 $row['realSizeReadable'] = $row['diskSizeReadable'];
             }
+
+
 
             $return[] = $row;
         }
