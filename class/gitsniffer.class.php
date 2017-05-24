@@ -218,7 +218,7 @@ class gitSniffer
         if ($count > 0)
         {
             $title = '';
-            foreach ($this->files as $f) $title = empty($title) ? $f['name'] : ", {$f['name']}";
+            foreach ($this->files as $f) $title .= empty($title) ? $f['name'] : ", {$f['name']}";
             $title = $count == 1 ? "Found one uncommitted file: $title" : "Found $count uncommitted files: $title";
 
         }
