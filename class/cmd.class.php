@@ -101,7 +101,7 @@ class cmd
     protected function addLog()
     {
         $logFile = __DIR__.'/../log/cmd_' . date("ymd") . '_SRV.log';
-        $row = date("[Y-m-d h:i:s] ") . "[{$this->cmdReturnVar}] {$this->cmd}\n";
+        $row = date("[Y-m-d H:i:s] ") . "[{$this->cmdReturnVar}] {$this->cmd}\n";
         foreach ($this->output as $line) $row .= "$line\n";
         $row .= "\n";
         file_put_contents($logFile, $row, FILE_APPEND);
