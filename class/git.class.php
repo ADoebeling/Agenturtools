@@ -78,16 +78,22 @@ class git
 
 
     /**
-     * Parse the files returned by `git status` including modified date and returns them as array:
+     * Returns a list of all modified files
      *
-     * [original] => MODE="??" MODIFIED="2017-05-21 19:50:51.536574362 +0200" FILE="test/" SIZE="4096" TYPE="directory"
-     * [status] => ?
-     * [modified] => 2017-05-21 19:50:51
-     * [name] => test/
-     * [size] => 4096
-     * [type] => directory
-     * [statusName] => untracked
-     * [sizeReadable] => 4 KB
+     * [original] => MODIFIED="2017-05-24 16:43:28.000000000 +0200" FILE="cli.php" MODE=" M" SIZE="613" DISKSIZE="4        cli.php" TYPE="regular file"
+     * [modified] => 2017-05-24 16:43:28
+     * [name] => cli.php
+     * [status] => M
+     * [sizeInByte] => 613
+     * [diskSizeInKb] => 4
+     * [type] => regular file
+     * [sizeReadable] => 613 Byte
+     * [diskSizeReadable] => 4 KB
+     * [typeShort] => file
+     * [statusName] => modified
+     * [statusDesc] => Modified file
+     * [realSizeInKb] => 0.5986328125
+     * [realSizeReadable] => 613 Byte
      *
      * @param string $cmd
      * @param string $regEx
@@ -124,7 +130,7 @@ class git
             else
                 $row['sizeReadable'] = round($row['sizeInByte'] / 1024 / 1024 / 1024 / 1024, 1) . ' TB';
 
-            
+
             if ($row['diskSizeInKb'] < 1000)  // Max 3 chars!
                 $row['diskSizeReadable'] = "{$row['diskSizeInKb']} KB";
 
@@ -186,22 +192,15 @@ class git
                     break;
             }
 
-            if ($row['statusName'] == 'deleted')
-            {
+            if ($row['statusName'] == 'deleted') {
                 $row['realSizeReadable'] = '';
-            }
-            else if ($row['type'] != 'directory')
-            {
-                $row['realSizeInKb'] = $row['sizeInByte']/1024;
+            } else if ($row['type'] != 'directory') {
+                $row['realSizeInKb'] = $row['sizeInByte'] / 1024;
                 $row['realSizeReadable'] = $row['sizeReadable'];
-            }
-            else
-            {
+            } else {
                 $row['realSizeInKb'] = $row['diskSizeInKb'];
                 $row['realSizeReadable'] = $row['diskSizeReadable'];
             }
-
-
 
             $return[] = $row;
         }
