@@ -173,15 +173,15 @@ class gitSniffer
         $count = count($this->files);
         $md = '';
         if ($count > 0) {
-            $md .= ($count > 1) ?
+            $md .= ($count == 1) ?
                 "## One uncommitted file or directory\n\n" :
                 "## $count uncommitted files and directories\n\n";
 
             $md .=
-                "| GitSniffer found: | File | Size | Modified |\n" .
+                "| Changes | File | Size | Modified |\n" .
                 "|-------------|------|------|----------|\n";
             foreach ($this->files as $f) {
-                $md .= "| {$f['statusDesc']} | `{$f['name']}` | {$f['realSizeReadable']} | {$f['modified']} |\n";
+                $md .= "| {$f['statusDesc']}: | `{$f['name']}` | {$f['realSizeReadable']} | {$f['modified']} |\n";
             }
         }
         return $md;
