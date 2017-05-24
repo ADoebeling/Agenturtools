@@ -117,7 +117,7 @@ const getHostnameWithManagedServerWorkaround = true;
 
 const cmdGetHostnameByReverseDns = 'dig +short -x $(dig +short %s)';
 
-const regExGetHostnameByReverseDns = '/(.*)/';
+const regExGetHostnameByReverseDns = '/(.*)\./';
 
 
 const reminderText = "Sorry for disturbing, but the [GitSniffer](https://github.com/ADoebeling/Agenturtools) ".
