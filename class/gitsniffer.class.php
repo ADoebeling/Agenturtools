@@ -135,12 +135,6 @@ class gitSniffer
     /** @var string git root path (toplevel) */
     protected $path;
 
-    /** @var string */
-    protected $hostname;
-
-    /** @var string */
-    protected $ip;
-
     /** @var  string current branch */
     protected $branch;
 
@@ -161,8 +155,6 @@ class gitSniffer
         $this->path = $this->git->getGitRootPath();
         $this->branch = $this->git->getGitBranch();
         $this->files = $this->git->getGitStatusFiles();
-        $this->hostname = hostname::getHostname();
-        $this->ip = hostname::getIpByHostname();
     }
 
     /**
@@ -206,7 +198,8 @@ class gitSniffer
             [
                 'branch' => $this->branch,
                 'path' => $this->path,
-                'hostname' => $this->hostname,
+                'hostname' => hostname::getHostname(),
+                'ip' => hostname::getIpByHostname(),
                 'gitStatus' => $this->getGitStatusAsMarkdown(),
                 'gitDiff' => $this->getGitDiffAsMarkdown(),
             ]);
