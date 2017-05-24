@@ -234,8 +234,12 @@ class gitSniffer
         $title = $this->getReminderTitle();
         $text = $this->getTextAsMarkdown();
 
-        (new githubIssue())
-            ->api('issues')
-            ->create(githubRepoOwner, githubRepo, array('title' => $title, 'body' => $text));
+        $gitHub = new githubIssue();
+        $gitHub->authenticate(githubUser, githubToken);
+
+        /** @var \Github\Api\Issue $issues */
+        $issues = $gitHub->api('issues');
+
+        return $issues->create(githubRepoOwner, githubRepo, array('title' => $title, 'body' => $text));
     }
 }
