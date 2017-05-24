@@ -110,10 +110,14 @@ const regExGitBranch = '/\* (.*)/';
 const regExGitDiff = '/(.*)/';
 
 /** Shall the displayed hostname gets determined by gethostname() or by the reverse-dns of the ip of the hostname*/
-const getHostnameByReverseDNS = false;
+const getHostnameByReverseDns = false;
 
 /** Only affects customer of the german hoster domainfactory */
 const getHostnameWithManagedServerWorkaround = true;
+
+const cmdGetHostnameByReverseDns = 'dig +short -x $(dig +short %s)';
+
+const regExGetHostnameByReverseDns = '/(.*)/';
 
 
 const reminderText = "Sorry for disturbing, but the [GitSniffer](https://github.com/ADoebeling/Agenturtools) ".
