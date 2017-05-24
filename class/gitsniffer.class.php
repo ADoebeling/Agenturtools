@@ -162,7 +162,7 @@ class gitSniffer
         $this->branch = $this->git->getGitBranch();
         $this->files = $this->git->getGitStatusFiles();
         $this->hostname = hostname::getHostname();
-        $this->ip = hostname::getExternalIp();
+        $this->ip = hostname::getIpByHostname();
     }
 
     /**
@@ -219,7 +219,7 @@ class gitSniffer
         {
             $title = '';
             foreach ($this->files as $f) $title .= empty($title) ? $f['name'] : ", {$f['name']}";
-            $title = $count == 1 ? "Found one uncommitted file: $title" : "Found $count uncommitted files: $title";
+            $title = $count == 1 ? "GitSniffer found one uncommitted file: $title" : "GitSniffer found $count uncommitted files: $title";
 
         }
         else

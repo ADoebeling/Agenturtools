@@ -1,4 +1,5 @@
 <?php
+
 namespace www1601com\Agenturtools;
 
 
@@ -16,25 +17,26 @@ class hostname
      * @param bool $managedServerWorkaround
      * @return string
      */
-    public static function getHostname(
-        $byReverseDns = getHostnameByReverseDns,
-        $cmd = cmdGetHostnameByReverseDns,
-        $regEx = regExGetHostnameByReverseDns,
-        $managedServerWorkaround = getHostnameWithManagedServerWorkaround)
+    public static function getHostname($byReverseDns = getHostnameByReverseDns,
+                                       $cmd = cmdGetHostnameByReverseDns,
+                                       $regEx = regExGetHostnameByReverseDns,
+                                       $managedServerWorkaround = getHostnameWithManagedServerWorkaround)
     {
         $hostname = gethostname();
-        if ($byReverseDns || $managedServerWorkaround && strstr($hostname, '.ispgateway.de'))
-        {
+        if ($byReverseDns || $managedServerWorkaround && strstr($hostname, '.ispgateway.de')) {
             $hostname = cmd::run(sprintf($cmd, $hostname), $regEx, 'string');
         }
         return $hostname;
     }
 
     /**
-     * @return string IPv4 by gethostbyname(gethostname())
+     * @return string IPv4
      */
-    public static function getExternalIp()
+    public static function getIpByHostname($byReverseDns = getHostnameByReverseDns,
+                                           $cmd = cmdGetHostnameByReverseDns,
+                                           $regEx = regExGetHostnameByReverseDns,
+                                           $managedServerWorkaround = getHostnameWithManagedServerWorkaround)
     {
-        return gethostbyname(gethostname());
+        return gethostbyname(self::getHostname($byReverseDns, $cmd, $regEx, $managedServerWorkaround));
     }
 }
