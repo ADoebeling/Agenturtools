@@ -202,6 +202,7 @@ class gitSniffer
                 'ip' => hostname::getIpByHostname(),
                 'gitStatus' => $this->getGitStatusAsMarkdown(),
                 'gitDiff' => $this->getGitDiffAsMarkdown(),
+                'notification' => reminderNotification,
             ]);
     }
 
