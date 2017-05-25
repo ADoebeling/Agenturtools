@@ -2,11 +2,13 @@
 
 The Agenturtools (EN: agency tools) are a collection of tools used by [1601.communication](https://www.1601.com) to manage its customer git repositories.   
     
+<img src=readme_files/screenshotGitSniffer_v0.2.170525.png width=300 align=right>
+
 ## Tool #1: GitSniffer (beta)
 
 The GitSniffer is searching for uncommitted files (in shared development repositories). If you setup the script as cronjob it will create friendly reminders to your team, if they forgot to commit their changes.
 
-![GitSniffer Screenshot v0.2.170525](readme_files/screenshotGitSniffer_v0.2.170525.png)
+
 
 ### Installation
 * Clone this repository  
