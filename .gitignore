@@ -1,4 +1,7 @@
-/vendor/
-/composer.phar
-/cli.php
+config/*
+!config/*.default.php
+
+vendor/
+composer.phar
+cli.php
 tmp/
