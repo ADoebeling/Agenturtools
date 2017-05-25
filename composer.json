@@ -12,6 +12,7 @@
         "theseer/phpdox": "^0.9.0",
         "VisualPHPUnit/VisualPHPUnit": "2.*",
         "knplabs/github-api": "^2.4",
-        "php-http/guzzle6-adapter": "^1.1"
+        "php-http/guzzle6-adapter": "^1.1",
+        "twig/twig": "~2.0"
     }
 }
